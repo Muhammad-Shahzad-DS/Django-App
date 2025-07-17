@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Email Verified Successfully</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #eaf4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .message-box {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+    }
+    h1 {
+      color: #28a745;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+    p {
+      color: #333;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+    a.button {
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    a.button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="message-box">
+    <h1>Your Email is Verified!</h1>
+    <p>Thank you for confirming your email address.<br>You may now log in to your account.</p>
+    <a class="button" href="{% url 'login' %}">Go to Login</a>
+  </div>
+</body>
+</html>

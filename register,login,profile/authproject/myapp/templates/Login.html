@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ✅ Style -->
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #28a745;
+      margin-top: 40px;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    #loginForm {
+      background-color: #fff;
+      padding: 25px 30px;
+      max-width: 400px;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+
+    #loginForm label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    #loginForm input[type="text"],
+    #loginForm input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    #loginForm button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #loginForm button:hover {
+      background-color: #218838;
+    }
+
+    #loginForm a {
+      display: block;
+      margin-top: 15px;
+      text-align: center;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    #loginForm a:hover {
+      text-decoration: underline;
+    }
+
+    #message {
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    #message p {
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    #message p[style*="green"] {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    #message p[style*="red"] {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✅ Page Title -->
+  <h2>Login to Your Account</h2>
+
+  <!-- ✅ Login Form -->
+  <form id="loginForm" method="POST">
+    {% csrf_token %}
+    <div id="message"></div>
+
+    <label for="username">Username:</label>
+    <input type="text" placeholder="Enter Username" name="username" id="username" required>
+
+    <label for="password">Password:</label>
+    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+
+    <button type="submit">Login</button>
+    <a href="{% url 'register' %}">Create an account</a>
+  </form>
+
+  <!-- ✅ jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <!-- ✅ AJAX Login Script -->
+  <script>
+    $('#loginForm').submit(function(e){
+      e.preventDefault();
+
+      const formData = {
+        'username': $('#username').val(),
+        'password': $('#password').val()
+      };
+
+      $.ajax({
+        url: '/login/',
+        type: 'POST',
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        dataType: 'json',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        success: function(response){
+          $('#message').html(`<p style="color: green;">✅ ${response.message}</p>`);
+          if (response.redirect_url) {
+            window.location.href = response.redirect_url;
+          }
+        },
+        error: function(xhr){
+          const errorMsg = xhr.responseJSON?.errors || "❌ Login failed";
+          $('#message').html(`<p style="color: red;">${errorMsg}</p>`);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
